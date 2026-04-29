@@ -1,45 +1,34 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React from 'react';
+import { ActivityIndicator, StatusBar, View } from 'react-native';
+import { Provider } from 'react-redux';
+import { PersistGate } from 'redux-persist/integration/react';
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+import AppNavigationNi from './src/navigations';
+import rootSaga from './src/app/sagas';
+import configureStore from './src/app/reducers';
 
-function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+const { store, persistor, runSaga } = configureStore();
 
+runSaga(rootSaga);
+
+const App = () => {
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <PersistGate
+        loading={
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <ActivityIndicator size="large" />
+          </View>
+        }
+        persistor={persistor}
+      >
+        <View style={{ flex: 1 }}>
+          <StatusBar barStyle="dark-content" />
+          <AppNavigationNi />
+        </View>
+      </PersistGate>
+    </Provider>
   );
-}
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
+};
 
 export default App;
