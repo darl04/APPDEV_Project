@@ -14,3 +14,5 @@ export const USER_REGISTER_RESET = 'USER_REGISTER_RESET';
 
 // AUTH/USER_LOGOUT
 export const USER_LOGOUT = 'USER_LOGOUT';
+
+//sagas

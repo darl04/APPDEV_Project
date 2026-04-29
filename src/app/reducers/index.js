@@ -35,3 +35,5 @@ export default () => {
 
   return { store, persistor, runSaga };
 };
+
+//reducers
